@@ -1,0 +1,44 @@
+#!/bin/sh
+
+clear
+
+LINKS="to_download_march_2019_1b"
+
+while read  i ;do
+
+echo  $i
+
+# Name
+wget -q $i -O - | grep -oP '(?<=<meta itemprop="name" content=").*?(?="/>)' > boom
+
+cat boom | sed -e 's/,/-/' > boom3
+
+# Nb Of Rating
+#wget -q $i -O - | grep -oP '(?<=<span class="AYi5wd TBRnV"><span class="" aria-label=").*?(?=ratings)' >> boom3
+
+# Average
+wget -q $i -O - | grep -oP '(?<=<div class="LvvOW"><div aria-label="Rated).*?(?= stars)' >> boom3
+
+# Nb Of Rating
+wget -q $i -O - | grep -oP '(?<=<span class="AYi5wd TBRnV"><span class="" aria-label=").*?(?=ratings)' >> boom3
+
+tr '\n' ';' < boom3 > output2.txt
+echo $i >> output2.txt
+tr '\n' ';' < output2.txt > output4.txt
+echo  `date +%d/%m/%Y` >> output4.txt
+echo "\n" >> output4.txt
+cat output4.txt >> FINITO
+
+done < $LINKS
+
+# CLEANING 
+
+grep -Ev "^$" FINITO > FINITO2
+cat FINITO2 | sed  's/^https.*//' | sed -r '/^\s*$/d' | sed -r '/^;/d' > IoT_Google_Apps_result.csv
+cat IoT_Google_Apps_result.csv
+
+rm out*
+rm boo*
+rm FIN*
+
+
