@@ -1,1 +1,3 @@
 # google_store_grab
+
+This script was made in 2019 to grab Rate,Number of download,link, and date, it is unfortunately not accurate anymore ... 
